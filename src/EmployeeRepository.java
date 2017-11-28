@@ -8,4 +8,6 @@ public interface EmployeeRepository {
     void addUnionMember(int memberId, Employee employee);
 
     Employee getUnionMember(int memberId);
+
+    void removeUnionMember(int memberId);
 }

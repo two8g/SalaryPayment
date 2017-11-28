@@ -231,4 +231,51 @@ public class TestAddSalariedEmployee {
         Assert.assertEquals(mail, ((MailMethod) employee.getPaymentMethod()).getMailAddress());
     }
 
+    /**
+     * 修改雇员协会属性
+     */
+    @Test
+    public void should_change_employee_affiliation() {
+        //give
+        int employeeId = 2;
+        int memberId = 47;
+        AddHourlyEmployee addHourlyEmployee = new AddHourlyEmployee(employeeId, "name", "address", 35.00);
+        addHourlyEmployee.execute();
+        //when
+        ChangeMemberTransaction changeMemberTransaction = new ChangeMemberTransaction(employeeId, memberId, 39.00);
+        changeMemberTransaction.execute();
+        //then
+        Employee employee = employeeRepository.getEmployee(employeeId);
+        Assert.assertNotNull(employee);
+        Affiliation affiliation = employee.getAffiliation();
+        Assert.assertNotNull(affiliation);
+        Assert.assertTrue(affiliation instanceof UnionAffiliation);
+        UnionAffiliation unionAffiliation = (UnionAffiliation) affiliation;
+        Assert.assertEquals(39.00, unionAffiliation.getWeeklyCharge(), 0.01);
+        Employee member = employeeRepository.getUnionMember(memberId);
+        Assert.assertNotNull(member);
+        Assert.assertSame(employee, member);
+    }
+
+    /**
+     * 删除协会成员
+     */
+    @Test
+    public void should_remove_union_member() {
+        //give
+        int employeeId = 2;
+        int memberId = 47;
+        AddHourlyEmployee addHourlyEmployee = new AddHourlyEmployee(employeeId, "name", "address", 35.00);
+        addHourlyEmployee.execute();
+        Employee employee = employeeRepository.getEmployee(employeeId);
+        UnionAffiliation unionAffiliation = new UnionAffiliation(memberId, employeeId);
+        employee.setAffiliation(unionAffiliation);
+        employeeRepository.addUnionMember(memberId, employee);
+        //when
+        ChangeUnffiliatedTransaction changeUnffiliatedTransaction = new ChangeUnffiliatedTransaction(employeeId);
+        changeUnffiliatedTransaction.execute();
+        //then
+        Assert.assertTrue(employee.getAffiliation() instanceof NoAffiliation);
+        Assert.assertNull(employeeRepository.getUnionMember(memberId));
+    }
 }

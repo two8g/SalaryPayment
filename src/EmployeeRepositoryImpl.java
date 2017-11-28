@@ -37,4 +37,9 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
     public Employee getUnionMember(int memberId) {
         return employeeMap.get(memberEmployeeMap.get(memberId));
     }
+
+    @Override
+    public void removeUnionMember(int memberId) {
+        memberEmployeeMap.remove(memberId);
+    }
 }
