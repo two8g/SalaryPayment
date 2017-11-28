@@ -1,5 +1,4 @@
 public class AddHourlyEmployee extends AddEmployee {
-    private static final int FRIDAY = 5;
     double hourSalary;
 
     public AddHourlyEmployee(int id, String name, String address, double hourSalary) {
@@ -14,7 +13,7 @@ public class AddHourlyEmployee extends AddEmployee {
 
     @Override
     PaymentSchedule getSchedule() {
-        return new WeeklySchedule(FRIDAY);
+        return new WeeklySchedule(HourlyClassification.FRIDAY);
     }
 
     @Override

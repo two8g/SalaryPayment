@@ -1,2 +1,2 @@
-public class PaymentClassification {
+public abstract class PaymentClassification {
 }

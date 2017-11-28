@@ -188,4 +188,26 @@ public class TestAddSalariedEmployee {
         Assert.assertNotNull(employee);
         Assert.assertEquals("Frank", employee.getName());
     }
+
+    /**
+     * 修改雇员类别
+     */
+    @Test
+    public void should_change_employee_classification() {
+        //give
+        int employeeId = 3;
+        AddCommissionedEmployee addCommissionedEmployee = new AddCommissionedEmployee(employeeId, "name", "address", 1000.00, 200.00);
+        addCommissionedEmployee.execute();
+        //when
+        ChangeHourlyTransaction changeHourlyTransaction = new ChangeHourlyTransaction(employeeId, 80.73);
+        changeHourlyTransaction.execute();
+        //then
+        Employee employee = employeeRepository.getEmployee(employeeId);
+        Assert.assertNotNull(employee);
+        Assert.assertEquals(employeeId, employee.getId());
+        Assert.assertTrue(employee.getPaymentClassification() instanceof HourlyClassification);
+        Assert.assertEquals(80.73, ((HourlyClassification) employee.getPaymentClassification()).getHourlySalary(), 0.01);
+        Assert.assertTrue(employee.getPaymentSchedule() instanceof WeeklySchedule);
+        Assert.assertEquals(5, ((WeeklySchedule) employee.getPaymentSchedule()).getValue());
+    }
 }

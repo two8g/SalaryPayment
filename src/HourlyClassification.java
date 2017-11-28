@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HourlyClassification extends PaymentClassification {
+    public static final int FRIDAY = 5;
     private double hourlySalary;
     private List<TimeCard> timeCards;
 
