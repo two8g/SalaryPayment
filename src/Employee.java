@@ -8,6 +8,7 @@ public class Employee {
     private PaymentClassification paymentClassification;
     private PaymentSchedule paymentSchedule;
     private PaymentMethod paymentMethod;
+
     private List<Affiliation> affiliations = new ArrayList<>();
 
     Employee(int id, String name, String address) {
@@ -54,5 +55,9 @@ public class Employee {
 
     public void addAffiliation(Affiliation affiliation) {
         affiliations.add(affiliation);
+    }
+
+    public List<Affiliation> getAffiliations() {
+        return affiliations;
     }
 }

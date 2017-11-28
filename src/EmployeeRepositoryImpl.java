@@ -3,6 +3,7 @@ import java.util.Map;
 
 public class EmployeeRepositoryImpl implements EmployeeRepository {
     private static Map<Integer, Employee> employeeMap = new HashMap<Integer, Employee>();
+    private static Map<Integer, Integer> memberEmployeeMap = new HashMap<Integer, Integer>();
 
     private EmployeeRepositoryImpl() {
 
@@ -29,6 +30,11 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
 
     @Override
     public void addUnionMember(int memberId, Employee employee) {
+        memberEmployeeMap.put(memberId, employee.getId());
+    }
 
+    @Override
+    public Employee getUnionMember(int memberId) {
+        return employeeMap.get(memberEmployeeMap.get(memberId));
     }
 }

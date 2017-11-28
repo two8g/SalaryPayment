@@ -6,4 +6,6 @@ public interface EmployeeRepository {
     void delete(int employeeId);
 
     void addUnionMember(int memberId, Employee employee);
+
+    Employee getUnionMember(int memberId);
 }
