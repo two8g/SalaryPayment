@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
-
 public class Employee {
     private int id;
     private String name;
@@ -9,7 +6,7 @@ public class Employee {
     private PaymentSchedule paymentSchedule;
     private PaymentMethod paymentMethod;
 
-    private List<Affiliation> affiliations = new ArrayList<>();
+    private Affiliation affiliation = new NoAffiliation();
 
     Employee(int id, String name, String address) {
         this.id = id;
@@ -53,11 +50,11 @@ public class Employee {
         this.paymentMethod = paymentMethod;
     }
 
-    public void addAffiliation(Affiliation affiliation) {
-        affiliations.add(affiliation);
+    public void setAffiliation(Affiliation affiliation) {
+        this.affiliation = affiliation;
     }
 
-    public List<Affiliation> getAffiliations() {
-        return affiliations;
+    public Affiliation getAffiliation() {
+        return affiliation;
     }
 }

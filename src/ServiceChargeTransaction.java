@@ -14,12 +14,10 @@ public class ServiceChargeTransaction implements Transaction {
     @Override
     public void execute() {
         Employee employee = EmployeeRepositoryImpl.getInstance().getUnionMember(memberId);
-        for (Affiliation affiliation : employee.getAffiliations()) {
-            if (affiliation instanceof UnionAffiliation) {
-                UnionAffiliation unionAffiliation = (UnionAffiliation) affiliation;
-                if (unionAffiliation.getMemberId() == memberId) {
-                    unionAffiliation.addServiceCharge(new ServiceCharge(day, charge));
-                }
+        if(employee.getAffiliation() instanceof UnionAffiliation){
+            UnionAffiliation unionAffiliation = (UnionAffiliation) employee.getAffiliation();
+            if (unionAffiliation.getMemberId() == memberId) {
+                unionAffiliation.addServiceCharge(new ServiceCharge(day, charge));
             }
         }
     }

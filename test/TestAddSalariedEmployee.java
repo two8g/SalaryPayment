@@ -159,7 +159,7 @@ public class TestAddSalariedEmployee {
         Employee employee = employeeRepository.getEmployee(employeeId);
         //when
         UnionAffiliation unionAffiliation = new UnionAffiliation(memberId, 12.5);
-        employee.addAffiliation(unionAffiliation);
+        employee.setAffiliation(unionAffiliation);
         employeeRepository.addUnionMember(memberId, employee);
         LocalDate day = LocalDate.of(2017, 11, 1);
         ServiceChargeTransaction serviceChargeTransaction = new ServiceChargeTransaction(memberId, day, 12.95);
