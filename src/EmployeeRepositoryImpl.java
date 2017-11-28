@@ -18,7 +18,7 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
     }
 
     @Override
-    public Employee getEmp(int empId) {
+    public Employee getEmployee(int empId) {
         return employeeMap.get(empId);
     }
 }

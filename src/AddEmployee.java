@@ -14,4 +14,17 @@ public abstract class AddEmployee implements EmployeeTransaction {
     abstract PaymentSchedule getSchedule();
 
     abstract PaymentMethod getMethod();
+
+    Employee generateEmployee() {
+        Employee employee = new Employee(id, name, address);
+        employee.setPaymentClassification(getClassification());
+        employee.setPaymentSchedule(getSchedule());
+        employee.setPaymentMethod(getMethod());
+        return employee;
+    }
+
+    @Override
+    public void execute() {
+        EmployeeRepositoryImpl.getInstance().addEmployee(generateEmployee());
+    }
 }

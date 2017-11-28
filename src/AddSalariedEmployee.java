@@ -7,15 +7,6 @@ public class AddSalariedEmployee extends AddEmployee {
     }
 
     @Override
-    public void execute() {
-        Employee employee = new Employee(id, name, address);
-        employee.setPaymentClassification(getClassification());
-        employee.setPaymentSchedule(getSchedule());
-        employee.setPaymentMethod(getMethod());
-        EmployeeRepositoryImpl.getInstance().addEmployee(employee);
-    }
-
-    @Override
     PaymentClassification getClassification() {
         return new SalariedClassification(salary);
     }
