@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+
 public class HourlyClassification extends PaymentClassification {
     private double hourlySalary;
 
@@ -7,5 +9,9 @@ public class HourlyClassification extends PaymentClassification {
 
     public double getHourlySalary() {
         return hourlySalary;
+    }
+
+    public TimeCard getTimeCard(LocalDate day) {
+        return null;
     }
 }

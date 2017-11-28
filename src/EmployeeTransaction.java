@@ -1,3 +1,3 @@
-public interface EmployeeTransaction {
-    void execute();
+public interface EmployeeTransaction extends Transaction {
+
 }

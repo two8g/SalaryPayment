@@ -1,6 +1,8 @@
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.time.LocalDate;
+
 public class TestAddSalariedEmployee {
     private EmployeeRepository employeeRepository = EmployeeRepositoryImpl.getInstance();
 
@@ -99,5 +101,27 @@ public class TestAddSalariedEmployee {
         //then
         Employee employee = employeeRepository.getEmployee(employeeId);
         Assert.assertNull(employee);
+    }
+
+    /**
+     * 登记时间卡
+     */
+    @Test
+    public void should_add_time_card() {
+        //give
+        int employeeId = 1;
+        new AddHourlyEmployee(employeeId, "name", "address", 50.00).execute();
+        LocalDate day = LocalDate.of(2017, 11, 20);
+        //when
+        TimeCardTransaction timeCardTransaction = new TimeCardTransaction(day, 8.0, employeeId);
+        timeCardTransaction.execute();
+        //then
+        Employee employee = employeeRepository.getEmployee(employeeId);
+        Assert.assertNotNull(employee);
+        PaymentClassification paymentClassification = employee.getPaymentClassification();
+        Assert.assertTrue(paymentClassification instanceof HourlyClassification);
+        TimeCard timeCard = ((HourlyClassification) paymentClassification).getTimeCard(day);
+        Assert.assertNotNull(timeCard);
+        Assert.assertEquals(8.0, timeCard.getHours(), 0.01);
     }
 }
