@@ -1,13 +1,11 @@
-public abstract class ChangeClassificationTransaction implements Transaction {
-    protected int employeeId;
+public abstract class ChangeClassificationTransaction extends ChangeEmployeeTransaction {
 
     public ChangeClassificationTransaction(int employeeId) {
-        this.employeeId = employeeId;
+        super(employeeId);
     }
 
     @Override
-    public void execute() {
-        Employee employee = EmployeeRepositoryImpl.getInstance().getEmployee(employeeId);
+    void change(Employee employee) {
         employee.setPaymentClassification(getClassification());
         employee.setPaymentSchedule(getSchedule());
     }

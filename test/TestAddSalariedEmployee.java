@@ -210,4 +210,17 @@ public class TestAddSalariedEmployee {
         Assert.assertTrue(employee.getPaymentSchedule() instanceof WeeklySchedule);
         Assert.assertEquals(5, ((WeeklySchedule) employee.getPaymentSchedule()).getValue());
     }
+
+    /**
+     * 修改雇员支付方式
+     */
+    @Test
+    public void should_change_employee_payment_method(){
+        //give
+
+        //when
+
+        //then
+
+    }
 }
