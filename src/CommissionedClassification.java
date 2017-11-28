@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+
 public class CommissionedClassification extends PaymentClassification {
     private double salary;
     private double commissionRate;
@@ -21,5 +23,9 @@ public class CommissionedClassification extends PaymentClassification {
 
     public void setCommissionRate(double commissionRate) {
         this.commissionRate = commissionRate;
+    }
+
+    public SalesReceipt getSalesReceipt(LocalDate day) {
+        return null;
     }
 }

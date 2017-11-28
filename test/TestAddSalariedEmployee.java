@@ -124,4 +124,26 @@ public class TestAddSalariedEmployee {
         Assert.assertNotNull(timeCard);
         Assert.assertEquals(8.0, timeCard.getHours(), 0.01);
     }
+
+    /**
+     * 登记销售凭条
+     */
+    @Test
+    public void should_add_sales_receipt() {
+        //give
+        int employeeId = 1;
+        new AddCommissionedEmployee(employeeId, "name", "address", 1000.00, 100.50).execute();
+        LocalDate day = LocalDate.of(2017, 11, 20);
+        //when
+        SalesReceiptTransaction salesReceiptTransaction = new SalesReceiptTransaction(day, 5, employeeId);
+        salesReceiptTransaction.execute();
+        //then
+        Employee employee = employeeRepository.getEmployee(employeeId);
+        Assert.assertNotNull(employee);
+        PaymentClassification paymentClassification = employee.getPaymentClassification();
+        Assert.assertTrue(paymentClassification instanceof CommissionedClassification);
+        SalesReceipt salesReceipt = ((CommissionedClassification) paymentClassification).getSalesReceipt(day);
+        Assert.assertNotNull(salesReceipt);
+        Assert.assertEquals(5, salesReceipt.getAmount());
+    }
 }
