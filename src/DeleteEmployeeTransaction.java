@@ -1,4 +1,4 @@
-public class DeleteEmployeeTransaction implements EmployeeTransaction {
+public class DeleteEmployeeTransaction implements Transaction {
     private int employeeId;
 
     public DeleteEmployeeTransaction(int employeeId) {

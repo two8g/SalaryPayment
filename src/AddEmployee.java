@@ -1,4 +1,4 @@
-public abstract class AddEmployee implements EmployeeTransaction {
+public abstract class AddEmployee implements  Transaction {
     private int id;
     private String name;
     private String address;
