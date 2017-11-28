@@ -57,4 +57,8 @@ public class Employee {
     public Affiliation getAffiliation() {
         return affiliation;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

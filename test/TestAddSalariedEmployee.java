@@ -170,4 +170,22 @@ public class TestAddSalariedEmployee {
         Assert.assertNotNull(serviceCharge);
         Assert.assertEquals(12.95, serviceCharge.getAmount(), 0.01);
     }
+
+    /**
+     * 修改雇员属性name
+     */
+    @Test
+    public void should_change_employee_name() {
+        //give
+        int employeeId = 4;
+        AddHourlyEmployee addHourlyEmployee = new AddHourlyEmployee(employeeId, "Jake", "House", 60.0);
+        addHourlyEmployee.execute();
+        //when
+        ChangeNameTransaction changeNameTransaction = new ChangeNameTransaction(employeeId, "Frank");
+        changeNameTransaction.execute();
+        //then
+        Employee employee = employeeRepository.getEmployee(employeeId);
+        Assert.assertNotNull(employee);
+        Assert.assertEquals("Frank", employee.getName());
+    }
 }
