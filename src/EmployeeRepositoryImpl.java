@@ -26,4 +26,9 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
     public void delete(int employeeId) {
         employeeMap.remove(employeeId);
     }
+
+    @Override
+    public void addUnionMember(int memberId, Employee employee) {
+
+    }
 }

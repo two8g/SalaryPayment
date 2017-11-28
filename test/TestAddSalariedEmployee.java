@@ -146,4 +146,28 @@ public class TestAddSalariedEmployee {
         Assert.assertNotNull(salesReceipt);
         Assert.assertEquals(5, salesReceipt.getAmount());
     }
+
+    /**
+     * 登记服务费用
+     */
+    @Test
+    public void should_add_service_charge() {
+        //give
+        int employeeId = 2;
+        int memberId = 10;
+        new AddHourlyEmployee(employeeId, "name", "address", 50.3).execute();
+        Employee employee = employeeRepository.getEmployee(employeeId);
+        //when
+        UnionAffiliation unionAffiliation = new UnionAffiliation(memberId, 12.5);
+        employee.addAffiliation(unionAffiliation);
+        employeeRepository.addUnionMember(memberId, employee);
+        LocalDate day = LocalDate.of(2017, 11, 1);
+        ServiceChargeTransaction serviceChargeTransaction = new ServiceChargeTransaction(memberId, day, 12.95);
+        serviceChargeTransaction.execute();
+        //then
+        Assert.assertNotNull(employee);
+        ServiceCharge serviceCharge = unionAffiliation.getServiceCharge(day);
+        Assert.assertNotNull(serviceCharge);
+        Assert.assertEquals(12.95, serviceCharge.getAmount(), 0.01);
+    }
 }

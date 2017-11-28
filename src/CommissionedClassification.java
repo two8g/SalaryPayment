@@ -17,16 +17,8 @@ public class CommissionedClassification extends PaymentClassification {
         return salary;
     }
 
-    public void setSalary(double salary) {
-        this.salary = salary;
-    }
-
     public double getCommissionRate() {
         return commissionRate;
-    }
-
-    public void setCommissionRate(double commissionRate) {
-        this.commissionRate = commissionRate;
     }
 
     public SalesReceipt getSalesReceipt(LocalDate day) {
