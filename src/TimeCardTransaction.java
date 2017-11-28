@@ -13,6 +13,8 @@ public class TimeCardTransaction implements Transaction {
 
     @Override
     public void execute() {
-
+        Employee employee = EmployeeRepositoryImpl.getInstance().getEmployee(employeeId);
+        PaymentClassification paymentClassification = employee.getPaymentClassification();
+        ((HourlyClassification) paymentClassification).addTimeCard(new TimeCard(day, hours));
     }
 }
