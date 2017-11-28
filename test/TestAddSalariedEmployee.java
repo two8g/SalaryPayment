@@ -215,12 +215,20 @@ public class TestAddSalariedEmployee {
      * 修改雇员支付方式
      */
     @Test
-    public void should_change_employee_payment_method(){
+    public void should_change_employee_payment_method() {
         //give
-
+        int employeeId = 1;
+        AddHourlyEmployee addHourlyEmployee = new AddHourlyEmployee(employeeId, "name", "address", 50.34);
+        addHourlyEmployee.execute();
         //when
-
+        String mail = "mail@mail.com";
+        ChangeMailTransaction changeMailTransaction = new ChangeMailTransaction(employeeId, mail);
+        changeMailTransaction.execute();
         //then
-
+        Employee employee = employeeRepository.getEmployee(employeeId);
+        Assert.assertNotNull(employee);
+        Assert.assertTrue(employee.getPaymentMethod() instanceof MailMethod);
+        Assert.assertEquals(mail, ((MailMethod) employee.getPaymentMethod()).getMailAddress());
     }
+
 }
