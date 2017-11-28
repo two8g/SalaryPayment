@@ -1,9 +1,9 @@
 public abstract class AddEmployee implements EmployeeTransaction {
-    int id;
-    String name;
-    String address;
+    private int id;
+    private String name;
+    private String address;
 
-    public AddEmployee(int id, String name, String address) {
+    AddEmployee(int id, String name, String address) {
         this.id = id;
         this.name = name;
         this.address = address;

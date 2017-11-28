@@ -79,4 +79,25 @@ public class TestAddSalariedEmployee {
         Assert.assertTrue(employee.getPaymentSchedule() instanceof BlweeklySchedule);
         Assert.assertEquals(5, ((BlweeklySchedule) employee.getPaymentSchedule()).getValue());
     }
+
+    /**
+     * 删除雇员
+     */
+    @Test
+    public void should_delete_employee() {
+        //give
+        int employeeId = 3;
+        AddCommissionedEmployee addCommissionedEmployee = new AddCommissionedEmployee(employeeId, "name", "address", 100.00, 10.50);
+        addCommissionedEmployee.execute();
+        //when
+        {
+            Employee employee = employeeRepository.getEmployee(employeeId);
+            Assert.assertNotNull(employee);
+        }
+        DeleteEmployeeTransaction deleteEmployeeTransaction = new DeleteEmployeeTransaction(employeeId);
+        deleteEmployeeTransaction.execute();
+        //then
+        Employee employee = employeeRepository.getEmployee(employeeId);
+        Assert.assertNull(employee);
+    }
 }

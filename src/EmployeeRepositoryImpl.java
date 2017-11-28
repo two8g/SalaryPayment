@@ -21,4 +21,9 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
     public Employee getEmployee(int empId) {
         return employeeMap.get(empId);
     }
+
+    @Override
+    public void delete(int employeeId) {
+        employeeMap.remove(employeeId);
+    }
 }
