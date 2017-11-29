@@ -2,7 +2,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommissionedClassification extends PaymentClassification {
+public class CommissionedClassification implements PaymentClassification {
     private double salary;
     private double commissionRate;
     private List<SalesReceipt> salesReceipts;

@@ -1,3 +1,3 @@
-public abstract class PaymentMethod {
-    public abstract void pay(Paycheck paycheck);
+public interface PaymentMethod {
+    void pay(Paycheck paycheck);
 }

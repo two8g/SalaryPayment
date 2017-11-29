@@ -2,7 +2,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HourlyClassification extends PaymentClassification {
+public class HourlyClassification implements PaymentClassification {
     public static final int FRIDAY = 5;
     private static final double WORK_HOUR_OF_DAY = 8.0;
     private static final double MORE_PAY_RATE = 1.5;

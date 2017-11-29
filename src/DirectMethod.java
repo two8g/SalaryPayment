@@ -1,4 +1,4 @@
-public class DirectMethod extends PaymentMethod {
+public class DirectMethod implements PaymentMethod {
     String accountNum;
 
     public DirectMethod(String accountNum) {

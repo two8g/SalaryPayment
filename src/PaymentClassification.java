@@ -1,3 +1,3 @@
-public abstract class PaymentClassification {
-    public abstract double calculatePay(Paycheck paycheck);
+public interface PaymentClassification {
+    double calculatePay(Paycheck paycheck);
 }

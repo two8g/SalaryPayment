@@ -1,4 +1,4 @@
-public class MailMethod extends PaymentMethod {
+public class MailMethod implements PaymentMethod {
     String mailAddress;
 
     public MailMethod(String mailAddress) {
