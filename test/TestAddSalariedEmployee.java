@@ -319,4 +319,130 @@ public class TestAddSalariedEmployee {
         Paycheck paycheck = paydayTransaction.getPaycheck(employeeId);
         Assert.assertNull(paycheck);
     }
+
+    /**
+     * 支付钟点工薪水,无时间卡
+     */
+    @Test
+    public void should_pay_single_hourly_employee_no_time_cards() {
+        //give
+        int employeeId = 1;
+        AddHourlyEmployee addHourlyEmployee = new AddHourlyEmployee(employeeId, "name", "address", 50.20);
+        addHourlyEmployee.execute();
+        LocalDate date = LocalDate.of(2017, 12, 1);//Friday
+        //when
+        PaydayTransaction paydayTransaction = new PaydayTransaction(date);
+        paydayTransaction.execute();
+        //then
+        ValidatePaycheck(paydayTransaction, employeeId, date, 0.0);
+    }
+
+    private void ValidatePaycheck(PaydayTransaction paydayTransaction, int employeeId, LocalDate date, double pay) {
+        Paycheck paycheck = paydayTransaction.getPaycheck(employeeId);
+        Assert.assertNotNull(paycheck);
+        Assert.assertEquals(date, paycheck.getPayDate());
+        Assert.assertEquals(pay, paycheck.getGrossPay(), 0.001);
+        Assert.assertEquals("Hold", paycheck.getDisposition());
+        Assert.assertEquals(0.00, paycheck.getDeductions(), 0.001);
+        Assert.assertEquals(pay, paycheck.getNetPay(), 0.001);
+    }
+
+    /**
+     * 支付钟点工薪水,一个不超过8小时时间卡
+     */
+    @Test
+    public void should_pay_single_hourly_employee_one_time_cards() {
+        //give
+        int employeeId = 1;
+        AddHourlyEmployee addHourlyEmployee = new AddHourlyEmployee(employeeId, "name", "address", 50.20);
+        addHourlyEmployee.execute();
+        LocalDate date = LocalDate.of(2017, 12, 1);//Friday
+        TimeCardTransaction timeCardTransaction = new TimeCardTransaction(date, 4.0, employeeId);
+        timeCardTransaction.execute();
+        //when
+        PaydayTransaction paydayTransaction = new PaydayTransaction(date);
+        paydayTransaction.execute();
+        //then
+        ValidatePaycheck(paydayTransaction, employeeId, date, 200.80);
+    }
+
+    /**
+     * 支付钟点工薪水,一个超过8小时时间卡
+     */
+    @Test
+    public void should_pay_single_hourly_employee_over_time_one_time_cards() {
+        //give
+        int employeeId = 1;
+        AddHourlyEmployee addHourlyEmployee = new AddHourlyEmployee(employeeId, "name", "address", 50.20);
+        addHourlyEmployee.execute();
+        LocalDate date = LocalDate.of(2017, 12, 1);//Friday
+        TimeCardTransaction timeCardTransaction = new TimeCardTransaction(date, 9.0, employeeId);
+        timeCardTransaction.execute();
+        //when
+        PaydayTransaction paydayTransaction = new PaydayTransaction(date);
+        paydayTransaction.execute();
+        //then
+        ValidatePaycheck(paydayTransaction, employeeId, date, 476.9);//50.20 * 8 + 50.2 * 1.5
+    }
+
+    /**
+     * 支付钟点工薪水,错误日期
+     */
+    @Test
+    public void should_pay_single_hourly_employee_wrong_date() {
+        //give
+        int employeeId = 1;
+        AddHourlyEmployee addHourlyEmployee = new AddHourlyEmployee(employeeId, "name", "address", 50.20);
+        addHourlyEmployee.execute();
+        LocalDate date = LocalDate.of(2017, 12, 2);//Friday
+        TimeCardTransaction timeCardTransaction = new TimeCardTransaction(date, 9.0, employeeId);
+        timeCardTransaction.execute();
+        //when
+        PaydayTransaction paydayTransaction = new PaydayTransaction(date);
+        paydayTransaction.execute();
+        //then
+        Assert.assertNull(paydayTransaction.getPaycheck(employeeId));
+    }
+
+    /**
+     * 支付钟点工薪水,两个时间卡
+     */
+    @Test
+    public void should_pay_single_hourly_employee_two_time_cards() {
+        //give
+        int employeeId = 1;
+        AddHourlyEmployee addHourlyEmployee = new AddHourlyEmployee(employeeId, "name", "address", 50.20);
+        addHourlyEmployee.execute();
+        LocalDate date = LocalDate.of(2017, 12, 1);//Friday
+        TimeCardTransaction timeCardTransaction = new TimeCardTransaction(date, 9.0, employeeId);
+        timeCardTransaction.execute();
+        TimeCardTransaction timeCardTransaction2 = new TimeCardTransaction(date.plusDays(-1), 5.0, employeeId);
+        timeCardTransaction2.execute();
+        //when
+        PaydayTransaction paydayTransaction = new PaydayTransaction(date);
+        paydayTransaction.execute();
+        //then
+        ValidatePaycheck(paydayTransaction, employeeId, date, 727.9);//50.20 * 8 + 50.2 * 1.5 + 5 * 50.2
+    }
+
+    /**
+     * 支付钟点工薪水,两个时期内时间卡
+     */
+    @Test
+    public void should_pay_single_hourly_employee_time_cards_spanning_two_periods() {
+        //give
+        int employeeId = 1;
+        AddHourlyEmployee addHourlyEmployee = new AddHourlyEmployee(employeeId, "name", "address", 50.20);
+        addHourlyEmployee.execute();
+        LocalDate date = LocalDate.of(2017, 12, 1);//Friday
+        TimeCardTransaction timeCardTransaction = new TimeCardTransaction(date, 9.0, employeeId);
+        timeCardTransaction.execute();
+        TimeCardTransaction timeCardTransaction2 = new TimeCardTransaction(date.plusDays(-9), 5.0, employeeId);
+        timeCardTransaction2.execute();
+        //when
+        PaydayTransaction paydayTransaction = new PaydayTransaction(date);
+        paydayTransaction.execute();
+        //then
+        ValidatePaycheck(paydayTransaction, employeeId, date, 476.9);//50.20 * 8 + 50.2 * 1.5
+    }
 }
