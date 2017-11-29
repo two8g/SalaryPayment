@@ -462,6 +462,8 @@ public class TestAddSalariedEmployee {
         ValidatePaycheck(paydayTransaction, employeeId, date, 0);
     }
 
+    //todo 销售凭条支付
+
     /**
      * 协会服务费扣除
      */

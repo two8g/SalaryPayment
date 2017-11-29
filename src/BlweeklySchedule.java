@@ -13,7 +13,7 @@ public class BlweeklySchedule implements PaymentSchedule {
 
     @Override
     public boolean isPayDay(LocalDate date) {
-        return false;
+        return date.getDayOfWeek().getValue() == value;
     }
 
     @Override
