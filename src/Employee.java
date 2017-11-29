@@ -70,11 +70,15 @@ public class Employee {
 
     public void payday(Paycheck paycheck) {
         double grossPay = getPaymentClassification().calculatePay(paycheck);
-        double deductions = getPaymentClassification().calculateDeductions(paycheck);
+        double deductions = getAffiliation().calculateDeductions(paycheck);
         double netPay = grossPay - deductions;
         paycheck.setGrossPay(grossPay);
         paycheck.setDeductions(deductions);
         paycheck.setNetPay(netPay);
         getPaymentMethod().pay(paycheck);
+    }
+
+    public LocalDate getPayPeriodStartDate(LocalDate payDate) {
+        return getPaymentSchedule().getPayPeriodStartDate(payDate);
     }
 }

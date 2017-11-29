@@ -342,7 +342,6 @@ public class TestAddSalariedEmployee {
         Assert.assertNotNull(paycheck);
         Assert.assertEquals(date, paycheck.getPayDate());
         Assert.assertEquals(pay, paycheck.getGrossPay(), 0.001);
-        Assert.assertEquals("Hold", paycheck.getDisposition());
         Assert.assertEquals(0.00, paycheck.getDeductions(), 0.001);
         Assert.assertEquals(pay, paycheck.getNetPay(), 0.001);
     }
@@ -444,5 +443,47 @@ public class TestAddSalariedEmployee {
         paydayTransaction.execute();
         //then
         ValidatePaycheck(paydayTransaction, employeeId, date, 476.9);//50.20 * 8 + 50.2 * 1.5
+    }
+
+    /**
+     * 支付销售薪水，无销售凭条
+     */
+    @Test
+    public void should_pay_single_commossion_employee_no_sales_receipt() {
+        //give
+        int employeeId = 1;
+        AddCommissionedEmployee addCommissionedEmployee = new AddCommissionedEmployee(employeeId, "name", "address", 1000.00, 125.0);
+        addCommissionedEmployee.execute();
+        LocalDate date = LocalDate.of(2017, 12, 1);//Friday
+        //when
+        PaydayTransaction paydayTransaction = new PaydayTransaction(date);
+        paydayTransaction.execute();
+        //then
+        ValidatePaycheck(paydayTransaction, employeeId, date, 0);
+    }
+
+    /**
+     * 协会服务费扣除
+     */
+    @Test
+    public void should_salaried_union_member_dues() {
+        //give
+        int employeeId = 1;
+        AddSalariedEmployee addSalariedEmployee = new AddSalariedEmployee(employeeId, "", "", 1000.00);
+        addSalariedEmployee.execute();
+        int memberId = 71;
+        ChangeMemberTransaction changeMemberTransaction = new ChangeMemberTransaction(employeeId, memberId, 29.0);
+        changeMemberTransaction.execute();
+        LocalDate date = LocalDate.of(2017, 11, 30);
+        //when
+        PaydayTransaction paydayTransaction = new PaydayTransaction(date);
+        paydayTransaction.execute();
+        //then
+        Paycheck paycheck = paydayTransaction.getPaycheck(employeeId);
+        Assert.assertNotNull(paycheck);
+        Assert.assertEquals(date, paycheck.getPayDate());
+        Assert.assertEquals(1000.00, paycheck.getGrossPay(), 0.001);
+        Assert.assertEquals(116.00, paycheck.getDeductions(), 0.001);
+        Assert.assertEquals(884.00, paycheck.getNetPay(), 0.001);
     }
 }

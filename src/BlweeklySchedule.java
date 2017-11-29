@@ -15,4 +15,9 @@ public class BlweeklySchedule implements PaymentSchedule {
     public boolean isPayDay(LocalDate date) {
         return false;
     }
+
+    @Override
+    public LocalDate getPayPeriodStartDate(LocalDate payDate) {
+        return payDate.plusDays(-4 - 7);
+    }
 }

@@ -39,8 +39,4 @@ public class CommissionedClassification extends PaymentClassification {
         return 0;
     }
 
-    @Override
-    public double calculateDeductions(Paycheck paycheck) {
-        return 0;
-    }
 }

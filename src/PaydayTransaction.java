@@ -17,7 +17,7 @@ public class PaydayTransaction implements Transaction {
         for (Integer employeeId : employeeIds) {
             Employee employee = EmployeeRepositoryImpl.getInstance().getEmployee(employeeId);
             if (employee.isPayDate(date)) {
-                Paycheck paycheck = new Paycheck(date);
+                Paycheck paycheck = new Paycheck(employee.getPayPeriodStartDate(date), date);
                 paycheckMap.put(employeeId, paycheck);
                 employee.payday(paycheck);
             }

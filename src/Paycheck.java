@@ -6,9 +6,11 @@ public class Paycheck {
     private double deductions;
     private double netPay;
     private String disposition;
+    private LocalDate payPeriodStartDate;
 
-    public Paycheck(LocalDate date) {
-        this.payDate = date;
+    public Paycheck(LocalDate payPeriodStartDate, LocalDate payDate) {
+        this.payPeriodStartDate = payPeriodStartDate;
+        this.payDate = payDate;
     }
 
     public LocalDate getPayDate() {
@@ -45,5 +47,9 @@ public class Paycheck {
 
     public void setDisposition(String disposition) {
         this.disposition = disposition;
+    }
+
+    public LocalDate getPayPeriodStartDate() {
+        return payPeriodStartDate;
     }
 }

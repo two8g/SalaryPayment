@@ -14,8 +14,4 @@ public class SalariedClassification extends PaymentClassification {
         return salary;
     }
 
-    @Override
-    public double calculateDeductions(Paycheck paycheck) {
-        return 0;
-    }
 }

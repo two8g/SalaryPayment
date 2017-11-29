@@ -55,8 +55,4 @@ public class HourlyClassification extends PaymentClassification {
                 || (timeCard.getDay().isAfter(startDay) && timeCard.getDay().isBefore(payDay));
     }
 
-    @Override
-    public double calculateDeductions(Paycheck paycheck) {
-        return 0;
-    }
 }
