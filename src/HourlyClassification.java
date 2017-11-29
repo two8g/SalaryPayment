@@ -51,8 +51,7 @@ public class HourlyClassification extends PaymentClassification {
 
     private boolean isInPayPeriods(TimeCard timeCard, LocalDate payDay) {
         LocalDate startDay = payDay.plusDays(-5);
-        return timeCard.getDay().equals(startDay) || timeCard.getDay().equals(payDay)
-                || (timeCard.getDay().isAfter(startDay) && timeCard.getDay().isBefore(payDay));
+        return Util.inPeriod(timeCard.getDay(), startDay, payDay);
     }
 
 }

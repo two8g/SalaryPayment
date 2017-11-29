@@ -36,7 +36,13 @@ public class UnionAffiliation implements Affiliation {
     }
 
     public double calculateDeductions(Paycheck paycheck) {
-        return numberOfChargeInPayPeriod(paycheck.getPayPeriodStartDate(), paycheck.getPayDate()) * weeklyCharge;
+        double deduce = numberOfChargeInPayPeriod(paycheck.getPayPeriodStartDate(), paycheck.getPayDate()) * weeklyCharge;
+        for (ServiceCharge serviceCharge : serviceCharges) {
+            if (Util.inPeriod(serviceCharge.getDate(), paycheck.getPayPeriodStartDate(), paycheck.getPayDate())) {
+                deduce += serviceCharge.getAmount();
+            }
+        }
+        return deduce;
     }
 
     private int numberOfChargeInPayPeriod(LocalDate start, LocalDate end) {

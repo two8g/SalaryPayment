@@ -449,7 +449,7 @@ public class TestAddSalariedEmployee {
      * 支付销售薪水，无销售凭条
      */
     @Test
-    public void should_pay_single_commossion_employee_no_sales_receipt() {
+    public void should_pay_single_commission_employee_no_sales_receipt() {
         //give
         int employeeId = 1;
         AddCommissionedEmployee addCommissionedEmployee = new AddCommissionedEmployee(employeeId, "name", "address", 1000.00, 125.0);
@@ -485,5 +485,65 @@ public class TestAddSalariedEmployee {
         Assert.assertEquals(1000.00, paycheck.getGrossPay(), 0.001);
         Assert.assertEquals(116.00, paycheck.getDeductions(), 0.001);
         Assert.assertEquals(884.00, paycheck.getNetPay(), 0.001);
+    }
+
+    /**
+     * 扣除协会服务费用
+     */
+    @Test
+    public void should_union_member_service_charge() {
+        //give
+        int employeeId = 1;
+        AddHourlyEmployee addHourlyEmployee = new AddHourlyEmployee(employeeId, "", "", 25.00);
+        addHourlyEmployee.execute();
+        int memberId = 77;
+        ChangeMemberTransaction changeMemberTransaction = new ChangeMemberTransaction(employeeId, memberId, 9.43);
+        changeMemberTransaction.execute();
+        LocalDate date = LocalDate.of(2017, 12, 1);
+        ServiceChargeTransaction serviceChargeTransaction = new ServiceChargeTransaction(memberId, date, 19.26);
+        serviceChargeTransaction.execute();
+        TimeCardTransaction timeCardTransaction = new TimeCardTransaction(date, 8.0, employeeId);
+        timeCardTransaction.execute();
+        //when
+        PaydayTransaction paydayTransaction = new PaydayTransaction(date);
+        paydayTransaction.execute();
+        //then
+        Paycheck paycheck = paydayTransaction.getPaycheck(employeeId);
+        Assert.assertNotNull(paycheck);
+        Assert.assertEquals(date, paycheck.getPayDate());
+        Assert.assertEquals(25.00 * 8, paycheck.getGrossPay(), 0.001);
+        Assert.assertEquals(9.43 + 19.26, paycheck.getDeductions(), 0.001);
+        Assert.assertEquals(25.00 * 8 - (9.43 + 19.26), paycheck.getNetPay(), 0.001);
+    }
+
+    /**
+     * 扣除协会服务费用,支付期外服务费用不被扣除
+     */
+    @Test
+    public void should_union_member_service_charge_spanning() {
+        //give
+        int employeeId = 1;
+        AddHourlyEmployee addHourlyEmployee = new AddHourlyEmployee(employeeId, "", "", 25.00);
+        addHourlyEmployee.execute();
+        int memberId = 77;
+        ChangeMemberTransaction changeMemberTransaction = new ChangeMemberTransaction(employeeId, memberId, 9.43);
+        changeMemberTransaction.execute();
+        LocalDate date = LocalDate.of(2017, 12, 1);
+        ServiceChargeTransaction serviceChargeTransaction = new ServiceChargeTransaction(memberId, date, 19.26);
+        serviceChargeTransaction.execute();
+        ServiceChargeTransaction serviceChargeTransaction2 = new ServiceChargeTransaction(memberId, date.plusDays(20), 10);
+        serviceChargeTransaction2.execute();
+        TimeCardTransaction timeCardTransaction = new TimeCardTransaction(date, 8.0, employeeId);
+        timeCardTransaction.execute();
+        //when
+        PaydayTransaction paydayTransaction = new PaydayTransaction(date);
+        paydayTransaction.execute();
+        //then
+        Paycheck paycheck = paydayTransaction.getPaycheck(employeeId);
+        Assert.assertNotNull(paycheck);
+        Assert.assertEquals(date, paycheck.getPayDate());
+        Assert.assertEquals(25.00 * 8, paycheck.getGrossPay(), 0.001);
+        Assert.assertEquals(9.43 + 19.26, paycheck.getDeductions(), 0.001);
+        Assert.assertEquals(25.00 * 8 - (9.43 + 19.26), paycheck.getNetPay(), 0.001);
     }
 }
