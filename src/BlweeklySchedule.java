@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+
 public class BlweeklySchedule implements PaymentSchedule {
     private int value;
 
@@ -7,5 +9,10 @@ public class BlweeklySchedule implements PaymentSchedule {
 
     public int getValue() {
         return value;
+    }
+
+    @Override
+    public boolean isPayDay(LocalDate date) {
+        return false;
     }
 }

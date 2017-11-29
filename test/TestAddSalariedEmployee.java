@@ -278,4 +278,45 @@ public class TestAddSalariedEmployee {
         Assert.assertTrue(employee.getAffiliation() instanceof NoAffiliation);
         Assert.assertNull(employeeRepository.getUnionMember(memberId));
     }
+
+    /**
+     * 支付带薪雇员薪水
+     */
+    @Test
+    public void should_pay_single_salaried_employee() {
+        //give
+        int employeeId = 1;
+        AddSalariedEmployee addSalariedEmployee = new AddSalariedEmployee(employeeId, "Name", "Address", 1000.00);
+        addSalariedEmployee.execute();
+        LocalDate date = LocalDate.of(2017, 11, 30);
+        //when
+        PaydayTransaction paydayTransaction = new PaydayTransaction(date);
+        paydayTransaction.execute();
+        //then
+        Paycheck paycheck = paydayTransaction.getPaycheck(employeeId);
+        Assert.assertNotNull(paycheck);
+        Assert.assertEquals(date, paycheck.getPayDate());
+        Assert.assertEquals(1000.00, paycheck.getGrossPay(), 0.001);
+        Assert.assertEquals("Hold", paycheck.getDisposition());
+        Assert.assertEquals(0.00, paycheck.getDeductions(), 0.001);
+        Assert.assertEquals(1000.00, paycheck.getNetPay(), 0.001);
+    }
+
+    /**
+     * 错误日期支付带薪雇员薪水
+     */
+    @Test
+    public void should_pay_single_salaried_employee_on_wrong_date() {
+        //give
+        int employeeId = 1;
+        AddSalariedEmployee addSalariedEmployee = new AddSalariedEmployee(employeeId, "Name", "Address", 1000.00);
+        addSalariedEmployee.execute();
+        LocalDate date = LocalDate.of(2017, 11, 29);
+        //when
+        PaydayTransaction paydayTransaction = new PaydayTransaction(date);
+        paydayTransaction.execute();
+        //then
+        Paycheck paycheck = paydayTransaction.getPaycheck(employeeId);
+        Assert.assertNull(paycheck);
+    }
 }

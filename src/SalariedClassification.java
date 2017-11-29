@@ -8,4 +8,14 @@ public class SalariedClassification extends PaymentClassification {
     public double getSalary() {
         return salary;
     }
+
+    @Override
+    public double calculatePay(Paycheck paycheck) {
+        return salary;
+    }
+
+    @Override
+    public double calculateDeductions(Paycheck paycheck) {
+        return 0;
+    }
 }

@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class EmployeeRepositoryImpl implements EmployeeRepository {
@@ -41,5 +43,14 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
     @Override
     public void removeUnionMember(int memberId) {
         memberEmployeeMap.remove(memberId);
+    }
+
+    @Override
+    public List<Integer> getAllEmployeeIds() {
+        List<Integer> employeeIds = new ArrayList<>();
+        for (Map.Entry<Integer, Employee> employeeEntry : employeeMap.entrySet()) {
+            employeeIds.add(employeeEntry.getKey());
+        }
+        return employeeIds;
     }
 }

@@ -33,4 +33,14 @@ public class CommissionedClassification extends PaymentClassification {
     public void addSalesReceipt(SalesReceipt salesReceipt) {
         salesReceipts.add(salesReceipt);
     }
+
+    @Override
+    public double calculatePay(Paycheck paycheck) {
+        return 0;
+    }
+
+    @Override
+    public double calculateDeductions(Paycheck paycheck) {
+        return 0;
+    }
 }

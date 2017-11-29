@@ -8,4 +8,9 @@ public class DirectMethod extends PaymentMethod {
     public String getAccountNum() {
         return accountNum;
     }
+
+    @Override
+    public void pay(Paycheck paycheck) {
+        paycheck.setDisposition("Account:" + accountNum);
+    }
 }

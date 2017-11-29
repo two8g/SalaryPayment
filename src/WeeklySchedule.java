@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+
 public class WeeklySchedule implements PaymentSchedule {
     private int value;
 
@@ -11,5 +13,10 @@ public class WeeklySchedule implements PaymentSchedule {
 
     public void setValue(int value) {
         this.value = value;
+    }
+
+    @Override
+    public boolean isPayDay(LocalDate date) {
+        return date.getDayOfWeek().getValue() == value;
     }
 }

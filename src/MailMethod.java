@@ -8,4 +8,9 @@ public class MailMethod extends PaymentMethod {
     public String getMailAddress() {
         return mailAddress;
     }
+
+    @Override
+    public void pay(Paycheck paycheck) {
+        paycheck.setDisposition("Mail:" + mailAddress);
+    }
 }

@@ -1,3 +1,5 @@
+import java.util.List;
+
 public interface EmployeeRepository {
     void addEmployee(Employee employee);
 
@@ -10,4 +12,6 @@ public interface EmployeeRepository {
     Employee getUnionMember(int memberId);
 
     void removeUnionMember(int memberId);
+
+    List<Integer> getAllEmployeeIds();
 }

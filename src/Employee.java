@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+
 public class Employee {
     private int id;
     private String name;
@@ -60,5 +62,19 @@ public class Employee {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isPayDate(LocalDate date) {
+        return getPaymentSchedule().isPayDay(date);
+    }
+
+    public void payday(Paycheck paycheck) {
+        double grossPay = getPaymentClassification().calculatePay(paycheck);
+        double deductions = getPaymentClassification().calculateDeductions(paycheck);
+        double netPay = grossPay - deductions;
+        paycheck.setGrossPay(grossPay);
+        paycheck.setDeductions(deductions);
+        paycheck.setNetPay(netPay);
+        getPaymentMethod().pay(paycheck);
     }
 }

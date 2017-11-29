@@ -28,4 +28,14 @@ public class HourlyClassification extends PaymentClassification {
     public void addTimeCard(TimeCard timeCard) {
         timeCards.add(timeCard);
     }
+
+    @Override
+    public double calculatePay(Paycheck paycheck) {
+        return 0;
+    }
+
+    @Override
+    public double calculateDeductions(Paycheck paycheck) {
+        return 0;
+    }
 }
